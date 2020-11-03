@@ -1,0 +1,51 @@
+{% if name=='news' %}
+{% extends "base.html" %}
+{% else %}
+{% extends "base_zh.html" %}
+{% endif %}
+
+{% block content %}
+<div class="uk-grid" data-uk-grid-margin>
+    <div class="uk-width-1-1">
+        {% if name=='news' %}
+        <h2 class="uk-article-title">Awards</h2>
+        {% else %}
+        <h2 class="uk-article-title">获奖</h2>
+        {% endif %}
+    </div>
+</div>
+
+{% for year in news|groupby('year')|reverse %}
+<div class="uk-grid" data-uk-grid-margin data-uk-scrollspy="{cls:'uk-animation-fade', target:'div > .uk-panel', delay:5, repeat:true}">
+    <div class="uk-width-1-1">
+        <div class="uk-panel">
+            <h2>{{ year.grouper }}</h2>
+        </div>
+        {% for entry in year.list|sort(attribute='idx', reverse=True) %}
+        <div class="uk-panel">
+            <p class="uk-article-lead">
+                <!--<span class="uk-text-bold uk-text-danger">{{ entry.month }}:</span>-->
+                <span class="uk-icon-circle" style="color:orange;font-size:80%"></span>
+                {% if name=='news' %}
+                {{ entry.content|strong|safe  }}
+                {% else %}
+                {{ entry.content_zh|strong|safe  }}
+                {% endif %}
+                {% if entry.image %}
+                <p></p>
+                <img src="{{url_for('static', filename='image/news/' + entry.image)}}" />
+                {% endif %}
+                {% if entry.link %}
+                {% if name=='news' %}
+                <a href="{{ entry.link }}">Check it out here.</a>
+                {% else %}
+                <a href="{{ entry.link }}">更多</a>
+                {% endif %}
+                {% endif %}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+{% endblock content %}

@@ -1,0 +1,37 @@
+{% if name=='positions' %}
+{% extends "base.html" %}
+{% else %}
+{% extends "base_zh.html" %}
+{% endif %}
+
+{% block assets %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/pdfobject.min.js') }}" type="text/javascript" charset="utf-8"></script>
+{% endblock assets %}
+
+{% block content %}
+<div class="uk-grid" data-uk-grid-margin>
+    <div class="uk-width-1-1">
+        {% if name=='positions' %}
+        <h2 class="uk-article-title">Positions Available</h2>
+        {% else %}
+        <h2 class="uk-article-title">职位招聘</h2>
+        {% endif %}
+    </div>
+</div>
+
+<div class="uk-grid" data-uk-grid-margin>
+    <div class="uk-width-1-1">
+	<div id="positions"></div>
+	<script>
+            var options = {height: "800px"};
+            {% if name=='positions' %}
+            PDFObject.embed("{{ url_for('static', filename='image/Chen_Lab_ job_listing_2018.pdf') }}", "#positions", options);
+            {% else %}
+            PDFObject.embed("{{ url_for('static', filename='image/Chen_Lab_ job_listing_2018.pdf') }}", "#positions", options);
+            {% endif %}
+	</script>
+    </div>
+</div>
+
+{% endblock content %}

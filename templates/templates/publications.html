@@ -1,0 +1,68 @@
+{% if name=='publications' %}
+{% extends "base.html" %}
+{% else %}
+{% extends "base_zh.html" %}
+{% endif %}
+
+
+{% block content %}
+<div class="uk-grid" data-uk-grid-margin>
+    <div class="uk-width-1-1">
+        {% if name=='publications' %}
+        <h2 class="uk-article-title">Publications</h2>
+        {% else %}
+        <h2 class="uk-article-title">发表论文</h2>
+        {% endif %}
+    </div>
+</div>
+
+<div class="uk-grid" data-uk-grid-margin>
+
+    <div class="uk-width-medium-3-4">
+        {% for year in publications|groupby('year')|reverse %}
+        <h2 id="{{ year.grouper }}">{{ year.grouper }}:</h2>
+        <ul class="uk-list-space">
+            {% for publication in year.list|sort(attribute='idx', reverse=True) %}
+            <li>{{ publication.title|strong|safe }} <a href="{{ publication.link }}"><i class="uk-icon-external-link"></i></a></li>
+            {% if publication.points %}
+            <ul class="uk-list-space">
+                {% for point in publication.points|split %}
+                <li>{{ point|strong|safe }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %} {% endfor %}
+        </ul>
+        {% endfor %}
+        {% if name=='publications' %}
+        <h2 id="before">Selected publications before Chen Lab:</h2>
+        {% else %}
+        <h2 id="before">建组以前:</h2>
+        {% endif %}
+        <div class="uk-panel uk-panel-box">
+            {{ publication_before_chenlab|markdown }}
+        </div>
+    </div>
+
+    <div class="uk-width-medium-1-4 uk-hidden-small">
+        <div class="uk-panel uk-panel-box" data-uk-sticky="{top:150}">
+            {% if name=='publications' %}
+            <h3 class="uk-nav-header">Publication Year</h3>
+            {% else %}
+            <h3 class="uk-nav-header">发表时间</h3>
+            {% endif %}
+            <ul class="uk-nav uk-nav-side" data-uk-scrollspy-nav="{closest:'li', smoothscroll:true}">
+                {% for year in publications|groupby('year')|reverse %}
+                <li><a href="#{{ year.grouper }}">{{ year.grouper }}</a></li>
+                {% endfor %}
+                <li class="uk-nav-divider"></li>
+                {% if name=='publications' %}
+                <li><a href="#before">selected publications</a></li>
+                {% else %}
+                <li><a href="#before">建组以前</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}

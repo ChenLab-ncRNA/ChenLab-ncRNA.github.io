@@ -1,0 +1,60 @@
+{% if name=="index" %}
+{% extends "base.html" %}
+{% else %}
+{% extends "base_zh.html" %}
+{% endif %}
+
+{% block assets %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/components/slideshow.almost-flat.min.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/components/slidenav.almost-flat.min.css') }}" type="text/css">
+<script src="{{ url_for('static', filename='js/components/slideshow.min.js') }}" type="text/javascript" charset="utf-8"></script>
+{% endblock assets %}
+
+{% block content %}
+<div class="uk-slidenav-position uk-margin-top uk-margin-bottom" data-uk-slideshow="{kenburns:true, autoplay:true}">
+    <ul class="uk-slideshow">
+        {% for picture in pictures %}
+        <li><img src="{{ url_for('static', filename='image/pictures/' + picture) }}" alt="picture" width="800" height="400"></li>
+        {% endfor %}
+    </ul>
+    <a href="#" class="uk-slidenav uk-slidenav-contrast uk-slidenav-previous" data-uk-slideshow-item="previous" style="color: rgba(255,255,255,0.4)"></a>
+    <a href="#" class="uk-slidenav uk-slidenav-contrast uk-slidenav-next" data-uk-slideshow-item="next" style="color: rgba(255,255,255,0.4)"></a>
+</div>
+
+<div class="uk-grid" data-uk-grid-margin>
+
+    <div class="uk-width-medium-5-5">
+        <!--<div class="uk-panel uk-panel-box uk-panel-box-secondary uk-panel-header" style="height: 550px;">-->
+        <div class="uk-panel uk-panel-box uk-panel-box-secondary uk-panel-header">
+            {% if name=="index" %}
+            <h2 class="uk-panel-title">Research</h2>
+                {{ research.mainpage|markdown }}
+            <a class="uk-button-link uk-align-right uk-text-large" href="{{ url_for('research') }}" type="button">More</a>
+            {% else %}
+            <h2 class="uk-panel-title">科学研究</h2>
+                {{ research.mainpage_zh|markdown }}
+            <a class="uk-button-link uk-align-right uk-text-large" href="{{ url_for('research', lang='zh') }}" type="button">更多</a>
+            {% endif %}
+        </div>
+        <div class="uk-panel uk-panel-box uk-panel-box-secondary uk-panel-header">
+            {% if name=="index" %}
+            <h2 class="uk-panel-title">Resource</h2>
+                <p><a class="uk-link-muted" href="{{ url_for('static', filename='image/Protocols_regularly_used_in_Chen_Lab.docx') }}">Protocols regularly used in Chen Lab</a></p>
+            {% else %}
+            <h2 class="uk-panel-title">资源</h2>
+                <p><a class="uk-link-muted" href="{{ url_for('static', filename='image/Protocols_regularly_used_in_Chen_Lab.docx') }}">Protocols regularly used in Chen Lab</a></p>
+            {% endif %}
+        </div>
+    </div>
+
+
+        <!-- <div class="uk-panel uk-panel-box uk-panel-box uk-panel-box-secondary uk-panel-header" style="margin-top: 15px">
+		<a href="http://www.sibcb.ac.cn/eindex.asp">
+			<img src="{{ url_for('static', filename='sibcb_logo.jpg') }}" alt="sibcb_logo">
+		</a>
+	</div> -->
+
+
+</div>
+{% endblock content %}

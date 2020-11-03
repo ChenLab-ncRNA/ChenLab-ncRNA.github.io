@@ -1,0 +1,46 @@
+{% if name=="research" %}
+{% extends "base.html" %}
+{% else %}
+{% extends "base_zh.html" %}
+{% endif %}
+
+{% block assets %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/components/slideshow.almost-flat.min.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/components/slidenav.almost-flat.min.css') }}" type="text/css">
+<script src="{{ url_for('static', filename='js/components/slideshow.min.js') }}" type="text/javascript" charset="utf-8"></script>
+{% endblock assets %}
+
+
+{% block content %}
+<div class="uk-grid" data-uk-grid-margin>
+    <div class="uk-width-1-1">
+        {% if name=="research" %}
+        <h2 class="uk-article-title">Research</h2>
+        {% else %}
+        <h2 class="uk-article-title">科学研究</h2>
+        {% endif %}
+    </div>
+</div>
+
+<div class="uk-grid" data-uk-grid-margin>
+    <div class="uk-width-1-1">
+        {% if name=="research" %}
+        {{ research.content|markdown }}
+        {% else %}
+        {{ research.content_zh|markdown }}
+        {% endif %}
+    </div>
+</div>
+
+<div class="uk-slidenav-position uk-margin-top uk-margin-bottom" data-uk-slideshow="{animation: 'random-fx', autoplay:true, autoplayInterval: 3000}">
+    <ul class="uk-slideshow">
+        {% for picture in pictures %}
+        <li><img src="{{ url_for('static', filename='image/research/' + picture) }}" alt="picture" width="800" height="400"></li>
+        {% endfor %}
+    </ul>
+    <a href="#" class="uk-slidenav uk-slidenav-previous" data-uk-slideshow-item="previous" style="color: rgba(0,0,0,0.4)"></a>
+    <a href="#" class="uk-slidenav uk-slidenav-next" data-uk-slideshow-item="next" style="color: rgba(0,0,0,0.4)"></a>
+</div>
+
+{% endblock content %}
